@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <iostream>
+#include <iterator>
 #include <list>
 #include <vector>
 
@@ -16,7 +18,7 @@ step1(int size) {
 }
 
 std::vector<CustomClass>
-step2(std::vector<CustomClass> origin, unsigned size, unsigned startPos, unsigned endPos) {
+step2(std::vector<CustomClass>& origin, unsigned size, unsigned startPos, unsigned endPos) {
     return std::vector<CustomClass>(origin.begin() + startPos, origin.begin() + endPos);
 }
 
@@ -33,9 +35,8 @@ std::list<CustomClass>
 step4(unsigned n, std::vector<CustomClass>& v) {
     std::sort(v.begin(), v.end());
     std::list<CustomClass> wholeList(v.begin(), v.end());
-    auto it = wholeList.end();
-    std::advance(it, -n);
-    return std::list<CustomClass>(wholeList.end(), it);
+    wholeList.resize(n);
+    return wholeList;
 }
 
 void
@@ -57,7 +58,7 @@ is_even(CustomClass n) {
 
 void
 step7(std::vector<CustomClass>& v) {
-    std::vector<CustomClass> evened_vec;
+    std::vector<CustomClass> evened_vec(v.size());
     std::copy_if(v.begin(), v.end(), evened_vec.begin(), is_even);
     v = evened_vec;
 }
@@ -77,11 +78,11 @@ step9(std::list<CustomClass> l1, std::list<CustomClass> l2) {
     std::list<std::pair<CustomClass, CustomClass>> l3;
     if (l1.size() >= l2.size()) {
         auto it = l1.end();
-        std::advance(it, l1.size() - l2.size());
+        std::advance(it, l2.size() - l1.size());
         l1.erase(it, l1.end()); // удаляем последние n элементов
     } else {
         auto it = l2.end();
-        std::advance(it, l2.size() - l1.size());
+        std::advance(it, l1.size() - l2.size());
         l2.erase(it, l2.end()); // удаляем последние n элементов
     }
     std::transform(l1.begin(), l1.end(), l2.begin(), std::back_inserter(l3),
@@ -118,7 +119,7 @@ main() {
     size = 600;
 
     v1 = step1(size);
-    v2 = step2(v2, size, size - 200, size);
+    v2 = step2(v1, size, size - 200, size);
     list1 = step3(n1, v1);
     list2 = step4(n2, v2);
     step5(v1, v2, n1,

@@ -2,7 +2,7 @@
 #include <random>
 
 CustomClass::CustomClass() {
-    printf("\tDefault constructor\n");
+    //printf("\tDefault constructor\n");
 
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -14,7 +14,7 @@ CustomClass::CustomClass() {
 
 CustomClass::CustomClass(int param) : size(param) {
     mas = new int[size];
-    printf("\tExplicit constructor\n");
+    //printf("\tExplicit constructor\n");
 }
 
 CustomClass::CustomClass(int param, int* data) : size(param) {
@@ -22,25 +22,27 @@ CustomClass::CustomClass(int param, int* data) : size(param) {
     for (unsigned i{}; i < size; i++) {
         mas[i] = data[i];
     }
-    printf("\tExplicit constructor\n");
+    //printf("\tExplicit constructor\n");
 }
 
 CustomClass::~CustomClass() {
-    printf("\tDestructor\n");
+    //printf("\tDestructor\n");
     delete[] mas;
 }
 
 CustomClass a;
 
-CustomClass::CustomClass(const CustomClass& obj) : CustomClass(obj.size, obj.mas) { printf("\tCopy constructor\n"); }
+CustomClass::CustomClass(const CustomClass& obj) : CustomClass(obj.size, obj.mas) {} //printf("\tCopy constructor\n"); }
 
 CustomClass&
 CustomClass::operator=(const CustomClass& other) {
-    printf("\tCopy operator\n");
+    //printf("\tCopy operator\n");
     if (this == &other) {
         return *this;
     }
-    delete[] mas;
+    if (this != 0) {
+        delete[] mas;
+    }
     size = other.size;
     mas = new int[size];
     for (unsigned i{}; i < size; i++) {
@@ -50,7 +52,7 @@ CustomClass::operator=(const CustomClass& other) {
 }
 
 CustomClass::CustomClass(CustomClass&& moved) {
-    printf("\tmove constructor\n");
+    //printf("\tmove constructor\n");
     if (this != &moved) {
         size = moved.size;
         mas = moved.mas;
